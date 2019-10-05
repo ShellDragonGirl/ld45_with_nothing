@@ -17,6 +17,7 @@ LD.Maps = {
         var tiles = LD.Maps.tiles;
         
         LD.Maps.tiles2 = map.addTilesetImage('cabin', 'tileset2');
+        var tiles2 = LD.Maps.tiles2;
 
         LD.Maps.layer0 = map.createStaticLayer(0, tiles );
         LD.Maps.layer1 = map.createStaticLayer(1, tiles, tiles2 );

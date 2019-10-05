@@ -363,13 +363,13 @@ LD.Scenes.Play = new Phaser.Class({
     preload: function ()
     {
 
-        this.load.image('tileset1', 'img/winter_outdoorsTileSheet.png');
-        this.load.image('tileset2', 'img/cabin.png');
+        this.load.image('tileset1', 'img/assets/winter_outdoorsTileSheet.png');
+        this.load.image('tileset2', 'img/assets/cabin.png');
         this.load.tilemapTiledJSON('forestcabin', 'json/forestcabin.json');
         
-        this.load.image('star', 'img/wood.png');
-        this.load.image('bomb', 'img/baddies.png');
-        this.load.spritesheet('boy', 'img/boy.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('star', 'img/sprites/wood.png');
+        this.load.image('bomb', 'img/sprites/baddies.png');
+        this.load.spritesheet('boy', 'img/sprites/boy.png', { frameWidth: 48, frameHeight: 64 });
 
         
 
@@ -389,6 +389,9 @@ LD.Scenes.Play = new Phaser.Class({
       
         var map = LD.Maps.create(this);
         var player = LD.Player.createPlayer();
+
+        this.physics.world.setBounds(0, 0, 300, 300, true, true, true, true);
+// /
 
         // do once
         
@@ -414,12 +417,14 @@ LD.Scenes.Play = new Phaser.Class({
         bombs = this.physics.add.group();
 
         
-        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+        LD.Messages.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
+        var layer1 = LD.Maps.layer1;
 
         this.physics.add.collider(player, layer1);
         this.physics.add.collider(stars, layer1);
         this.physics.add.collider(bombs, layer1);
-        this.physics.add.collider(player, LD.Maps.layer1);
+        this.physics.add.collider(player, layer1);
         
         this.physics.add.overlap(player, stars, this.collectStar, null, this);
 
@@ -438,38 +443,7 @@ LD.Scenes.Play = new Phaser.Class({
         
 
         var player = LD.Player.updatePlayer();
-        var cursors = LD.Globals.cursors;
         
-
-        if (LD.Globals.gameOver)
-        {
-            return;
-        }
-        player.setVelocity(0);
-        
-        if (cursors.left.isDown)
-        {
-            player.setVelocityX(-160);
-            player.anims.play('left', true);
-        }
-        else if (cursors.right.isDown)
-        {
-            player.setVelocityX(160);
-
-            player.anims.play('right', true);
-        }
-        if (cursors.up.isDown)
-        {
-            player.setVelocityY(-160);
-            
-            player.anims.play('up', true);
-        }
-        else if (cursors.down.isDown) 
-        {
-            player.setVelocityY(160);
-            
-            player.anims.play('down', true);
-        } 
 
        
     },
@@ -479,8 +453,8 @@ LD.Scenes.Play = new Phaser.Class({
         star.disableBody(true, true);
 
         
-        score += 10;
-        scoreText.setText('Score: ' + score);
+        LD.Player.score += 10;
+        LD.Messages.scoreText.setText('Score: ' + LD.Player.score);
 
         if (stars.countActive(true) === 0)
         {

@@ -9,14 +9,15 @@ LD.Player = {
 
 	refresh: function (){
 		// refresh every game propeties goes here
-		LD.Player.currentHP = 10;
+        LD.Player.currentHP = 10;
+		LD.Player.score = 0;
 	},
 
 	createPlayer: function(){
 		thisGame = LD.Globals.game;
 		LD.Player.refresh();
 
-		LD.Player.player = thisGame.physics.add.sprite(100, 450, 'boy');
+		LD.Player.player = thisGame.physics.add.sprite(200, 200, 'boy');
 
       
         LD.Player.player.setCollideWorldBounds(true);
@@ -68,8 +69,41 @@ LD.Player = {
 
 	updatePlayer: function(){
 
+        var cursors = LD.Globals.cursors;
+        var player = LD.Player.player;
 
-		return LD.Player.player;
+        if (LD.Globals.gameOver)
+        {
+            return;
+        }
+        player.setVelocity(0);
+        
+        if (cursors.left.isDown)
+        {
+            player.setVelocityX(-160);
+            player.anims.play('left', true);
+        }
+        else if (cursors.right.isDown)
+        {
+            player.setVelocityX(160);
+
+            player.anims.play('right', true);
+        }
+        if (cursors.up.isDown)
+        {
+            player.setVelocityY(-160);
+            
+            player.anims.play('up', true);
+        }
+        else if (cursors.down.isDown) 
+        {
+            player.setVelocityY(160);
+            
+            player.anims.play('down', true);
+        } 
+
+
+		return player;
 	}
 
 	
