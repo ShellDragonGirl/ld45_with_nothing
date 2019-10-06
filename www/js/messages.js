@@ -19,7 +19,7 @@ LD.Messages = {
     timeTextPrefix :   "Time: ",
     savedTime: 0,
 
-    introTextMsg:   "Click to play!!",
+    introTextMsg:   "Don't you think It's time to get started?   ...Isn't time you WAKE UP!",
     selectTextMsg:   "Select your Runner!",
     winTextMsg:   "You Won!",
     loseTextMsg:   "You Lost!",

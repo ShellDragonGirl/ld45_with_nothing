@@ -47,7 +47,7 @@
         {
          "columns":25,
          "firstgid":1,
-         "image":"..\/assets\/winter_outdoorsTileSheet.png",
+         "image":"..\/..\/assets\/winter_outdoorsTileSheet.png",
          "imageheight":1264,
          "imagewidth":400,
          "margin":0,
@@ -60,7 +60,7 @@
         {
          "columns":48,
          "firstgid":1976,
-         "image":"..\/assets\/cabin.png",
+         "image":"..\/..\/assets\/cabin.png",
          "imageheight":768,
          "imagewidth":768,
          "margin":0,

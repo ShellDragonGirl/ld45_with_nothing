@@ -47,7 +47,7 @@
         {
          "columns":25,
          "firstgid":1,
-         "image":"..\/assets\/winter_outdoorsTileSheet.png",
+         "image":"..\/..\/assets\/winter_outdoorsTileSheet.png",
          "imageheight":1264,
          "imagewidth":400,
          "margin":0,
