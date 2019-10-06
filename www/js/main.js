@@ -26,8 +26,7 @@ function main(){
 	    },
 	    scene: [LD.Scenes.Intro, 
 	    	LD.Scenes.Play, 
-	    	LD.Scenes.Win, 
-	    	LD.Scenes.Lose]
+	    	LD.Scenes.WinLose]
 	};
 
 	var game = new Phaser.Game(config);
