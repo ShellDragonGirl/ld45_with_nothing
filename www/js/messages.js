@@ -27,7 +27,7 @@ LD.Messages = {
     timeTextPrefix :   "Time: ",
     savedTime: 0,
 
-    introTextMsg:   "Don't you think It's time to get started?   \n\t...Isn't time you WAKE UP!",
+    introTextMsg:   "Don't you think It's time we got \n\t started?   \n\t...Isn't time you WAKE UP!",
     selectTextMsg:   "Select your Runner!",
     winloseTextMsg:   "",
     restartTextMsg:   "Click to restart!",
