@@ -10,7 +10,10 @@ LD.Monsters = {
     lineDelay: 500,
 
     maxVel: 120,
-    // nothingOffset: {x:50,y:50},
+
+    attackThreshold: 100,
+    attackDamage: 0.2,
+
 
 	refresh: function (){
 		// refresh every game propeties goes here
@@ -25,6 +28,8 @@ LD.Monsters = {
 
       
         LD.Monsters.monsters.setCollideWorldBounds(true);
+        LD.Monsters.monsters.setBounce(true);
+        LD.Monsters.monsters.health = 10;
 
         
 
@@ -38,7 +43,7 @@ LD.Monsters = {
                                                 loop: true });
 
 
-		// return LD.Monsters.monsters;
+		return LD.Monsters.monsters;
 	},
 
 	updateTicks: function(){
@@ -58,8 +63,10 @@ LD.Monsters = {
 
 
         var monsters = LD.Monsters.monsters;
+        var player = LD.Player.player;
 
-        if (LD.Globals.gameOver)
+
+        if (!LD.Monsters.monsters.active)
         {
             return;
         }
@@ -101,6 +108,22 @@ LD.Monsters = {
             LD.Monsters.setAnimOfBoth('down');
         } 
 
+        // get x , y diff
+
+        var diffX = player.x - monsters.x;
+        var diffY = player.y - monsters.y;
+        var trueDistance = Math.sqrt( Math.pow(diffX,2), Math.pow(diffY,2) );
+        var absDist = Math.abs(trueDistance);
+
+        if(LD.Monsters.attackThreshold > absDist){
+            thisGame.physics.moveToObject(LD.Monsters.monsters, LD.Player.player, LD.Monsters.mavVel);
+        }
+
+        // find the true distance
+
+        //set velx and vely
+
+        
 
 		return monsters;
 	},

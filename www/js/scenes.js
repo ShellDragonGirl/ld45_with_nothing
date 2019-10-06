@@ -339,6 +339,7 @@ LD.Scenes.Play = new Phaser.Class({
         
         this.load.image('star', 'img/sprites/wood.png');
         this.load.image('bomb', 'img/sprites/baddies.png');
+        this.load.image('sword2', 'img/sprites/sword2.png');
         this.load.spritesheet('boy', 'img/sprites/boy.png', { frameWidth: 48, frameHeight: 64 });
         this.load.spritesheet('nothing', 'img/sprites/nothing.png', { frameWidth: 48, frameHeight: 48 });
         this.load.spritesheet('baddie', 'img/sprites/baddies.png', { frameWidth: 48, frameHeight: 48 });
@@ -361,7 +362,7 @@ LD.Scenes.Play = new Phaser.Class({
       
         var map = LD.Maps.create(this);
         var player = LD.Player.createPlayer();
-        LD.Monsters.createMonsters();
+        var monsters = LD.Monsters.createMonsters();
 
         // this.physics.world.setBounds(0, 0, 720, 720, true, true, true, true);
         this.physics.world.setBounds(0, 0, 
@@ -381,18 +382,21 @@ LD.Scenes.Play = new Phaser.Class({
         // LD.Messages.healthBarCurrentGraphics = this.add.graphics({ fillStyle: { color: 0xFF0000 } });
         // LD.Messages.healthBarCurrentGraphics.fillRectShape(LD.Messages.healthBarCurrentRect);
         
-        LD.Messages.healthBarFullRect = this.add.rectangle(200, 200, 148, 40, 0x0000ff);
-        LD.Messages.healthBarCurrentRect = this.add.rectangle(200, 200, 130, 40, 0xff0000);
+        LD.Messages.healthBarFullRect = this.add.rectangle(200, 200, 148, 20, 0x0000ff);
+        LD.Messages.healthBarCurrentRect = this.add.rectangle(200, 200, 130, 20, 0xff0000);
 
         
         LD.Globals.cursors = this.input.keyboard.createCursorKeys();
         var cursors = LD.Globals.cursors;
 
         LD.Globals.myKeys = this.input.keyboard.addKeys(
-            {W:Phaser.Input.Keyboard.KeyCodes.W,
-            S:Phaser.Input.Keyboard.KeyCodes.S,
-            A:Phaser.Input.Keyboard.KeyCodes.A,
-            D:Phaser.Input.Keyboard.KeyCodes.D}
+            {
+                W:Phaser.Input.Keyboard.KeyCodes.W,
+                S:Phaser.Input.Keyboard.KeyCodes.S,
+                A:Phaser.Input.Keyboard.KeyCodes.A,
+                D:Phaser.Input.Keyboard.KeyCodes.D,
+                SPACE:Phaser.Input.Keyboard.KeyCodes.SPACE
+            }
         );
 
         
@@ -439,6 +443,9 @@ LD.Scenes.Play = new Phaser.Class({
 
         this.physics.add.collider(player, bombs, this.hitBomb, null, this);
 
+        this.physics.add.collider(player, monsters, this.hitMonsters, null, this);
+        this.physics.add.collider(LD.Player.sword, monsters, this.hitSword, null, this);
+
 
         
 
@@ -454,7 +461,16 @@ LD.Scenes.Play = new Phaser.Class({
         var player = LD.Player.updatePlayer();
         LD.Monsters.updateMonsters();
         
-        // LD.Messages.healthBarCurrentRect.setSize(30,41);
+        var hpRatio =  148 * (LD.Player.currentHP / LD.Player.totalHP);
+        LD.Messages.healthBarCurrentRect.setSize(hpRatio,20);
+
+        if(LD.Player.currentHP <= 0){
+            thisGame.scene.start('lose', { id: 2, text:  "you lost lol"  });
+        }
+
+        if(LD.Monsters.monsters.health <= 0){
+            LD.Monsters.monsters.destroy();
+        }
     },
 
 
@@ -508,6 +524,32 @@ LD.Scenes.Play = new Phaser.Class({
         player.anims.play('down');
 
         LD.Globals.gameOver = true;
+    },
+
+    hitMonsters: function (player, monster)
+    {
+        // this.physics.pause();
+
+        player.setTint(0xff0000);
+
+        // player.anims.play('boydown');
+
+        LD.Player.currentHP -= LD.Monsters.attackDamage;
+
+        // thisGame.scene.start('lose', { id: 2, text:  "you lost lol"  });
+    },
+
+    hitSword: function (sword, monster)
+    {
+        // this.physics.pause();
+
+        // player.setTint(0xff0000);
+
+        // player.anims.play('boydown');
+
+        LD.Monsters.monsters.health -= LD.Player.attackDamage;
+
+        // thisGame.scene.start('lose', { id: 2, text:  "you lost lol"  });
     }
     
 
