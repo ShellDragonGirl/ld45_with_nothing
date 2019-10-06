@@ -7,6 +7,10 @@ LD.Messages = {
     woodTextPrefix:   "Need Wood: ",
     woodTextSuffix:   "/9",
 
+    nothingText:  "",
+    nothingTextPrefix:   "Nothing: ",
+    nothingTextSuffix:   "/"+LD.Player.nothingTallyMax,
+
     movesText:  "",
     movesTextPrefix:   "Moves: ",
 

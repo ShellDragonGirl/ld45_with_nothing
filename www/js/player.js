@@ -14,11 +14,18 @@ LD.Player = {
 
     attackDamage: 4,
 
+    maxVel: 160,
+    voidMultFactor: 2,
+
+    nothingTallyMax: 10,
+
 	refresh: function (){
 		// refresh every game propeties goes here
         LD.Player.currentHP = 10;
+        LD.Player.nothingTally = 0;
         LD.Player.score = 0;
-		LD.Player.swipeAngle = 0;
+        LD.Player.swipeAngle = 0;
+		LD.Player.vel = {x:0,y:0};
 	},
 
 	createPlayer: function(){
@@ -35,6 +42,7 @@ LD.Player = {
 
       
         LD.Player.player.setCollideWorldBounds(true);
+        LD.Player.player.setSize(31,54).setOffset(9,7);
 
         
 
@@ -47,8 +55,61 @@ LD.Player = {
         animKeys.forEach(LD.Player.buildAnims);
 
         
+        var voidShootAnimation = thisGame.anims.create({
+            key: 'void_shoot',
+            frames: thisGame.anims.generateFrameNumbers('void'),
+            frameRate: 5,
+            repeat: -1
+        });
+        LD.Player.voids = thisGame.physics.add.group({
+            defaultKey: 'void',
+            maxSize: LD.Player.voidMaxTotal,
+            name: "void",
+            createCallback: function (child) {
+                // child.setName('void');
+                // child.sprite = thisGame.physics.add.sprite(0, 0, 'void');
+                
+                child.setCollideWorldBounds(true);
+                child.body.onWorldBounds = true;
 
+                child.fakeaf = "derp";
+
+
+                child.body.world.on('worldbounds', function(body) {
+                  // Check if the body's game object is the sprite you are listening for
+                  if (body.gameObject === this) {
+                    // Stop physics and render updates for this object
+                    this.setActive(false);
+                    this.setVisible(false);
+                    console.log("collide world bounds", child.name);
+                  }
+                }, child);
+                // child.publicName = LD.Bullets.publicName;
+                // console.log('Created', void.name);
+            },
+            removeCallback: function (child) {
+                // console.log('Removed', void.name);
+            }
+        });
+        LD.Player.voids.createMultiple({
+            visible: false,
+            active: false,
+            key: LD.Player.voids.defaultKey,
+            repeat: LD.Player.voids.maxSize - 1
+        });
         
+
+        thisGame.input.on('pointerdown', function (pointer) {
+
+            console.log('down');
+
+            // this.add.image(pointer.x, pointer.y, 'logo');
+
+            LD.Player.activateBullet(pointer);
+
+        }, thisGame);
+
+
 
 
 		return LD.Player.player;
@@ -78,10 +139,17 @@ LD.Player = {
             return;
         }
 
+        // console.log(player);
+        // if(player.isTinted){
+        //     player.clearTint();
+        // }
+
         // player.anims.pause({frame: 4});
         // player.currentAnim.pause();
 
         player.setVelocity(0);
+        LD.Player.vel.x = 0;
+        LD.Player.vel.y = 0;
         // console.log(player.anims.currentAnim);
         if(!player.anims.currentAnim){
             LD.Player.setAnimOfBoth('stopped');
@@ -92,13 +160,15 @@ LD.Player = {
         
         if (cursors.left.isDown || myKeys.A.isDown)
         {
-            player.setVelocityX(-160);
+            LD.Player.vel.x = -LD.Player.maxVel;
+            player.setVelocityX(-LD.Player.maxVel);
             LD.Player.setAnimOfBoth('left');
             swordLR = LD.Player.swordOffset.xL;
         }
         else if (cursors.right.isDown || myKeys.D.isDown)
         {
-            player.setVelocityX(160);
+            LD.Player.vel.x = LD.Player.maxVel;
+            player.setVelocityX(LD.Player.maxVel);
 
             LD.Player.setAnimOfBoth('right');
             swordLR = LD.Player.swordOffset.xR;
@@ -106,13 +176,15 @@ LD.Player = {
         }
         if (cursors.up.isDown || myKeys.W.isDown)
         {
-            player.setVelocityY(-160);
+            LD.Player.vel.y = -LD.Player.maxVel;
+            player.setVelocityY(-LD.Player.maxVel);
             
             LD.Player.setAnimOfBoth('up');
         }
         else if (cursors.down.isDown || myKeys.S.isDown) 
         {
-            player.setVelocityY(160);
+            LD.Player.vel.y = LD.Player.maxVel;
+            player.setVelocityY(LD.Player.maxVel);
             
             LD.Player.setAnimOfBoth('down');
         } 
@@ -124,15 +196,20 @@ LD.Player = {
             }else{
                 LD.Player.swipeAngle -= LD.Player.swipeInc;
             }
-            
+            sword.setVisible(true);
+            sword.body.enable = true;
         }else{
             LD.Player.swipeAngle = 0;
-            // sword.setVisible(false);
+            sword.setVisible(false);
+            sword.body.enable = false;
+
         }
 
 
 
         if(sword.angle != LD.Player.swipeAngle){
+            
+
             if(LD.Player.swipeDegrees < Math.max(Math.abs(sword.angle), Math.abs(LD.Player.swipeAngle)) ){
                 LD.Player.swipeAngle = 0;
                 sword.setAngle(0);
@@ -150,6 +227,9 @@ LD.Player = {
 
         sword.setPosition(player.x + swordLR,
                             player.y + LD.Player.swordOffset.yR);
+
+
+        
 
 		return player;
 	},
@@ -194,6 +274,39 @@ LD.Player = {
     setAnimOfBoth: function (anim){
         LD.Player.player.anims.play('boy'+anim, true);
         LD.Player.nothing.anims.play('nothing'+anim, true);
+    },
+
+    activateBullet: function (pointer) {
+
+        var child = LD.Player.voids.get(LD.Globals.horzCenter, LD.Globals.vertOneThird);
+
+        if (!child) return; // None free
+
+
+
+        child
+        .setActive(true)
+        .setVisible(true)
+        // .setTint(Phaser.Display.Color.RGBToString(LD.Globals.randomNumber(50,255), 255 , 255 ))
+        // .setTint(Phaser.Display.Color.RandomRGB().color)
+        .clearTint()
+        .setScale(5)
+        .play('void_shoot');
+
+        var player = LD.Player.player;
+        var vel =  LD.Player.vel; 
+        var mult =  LD.Player.voidMultFactor; 
+
+        child.setPosition(player.x, player.y);
+
+        if(vel.x == 0 && vel.y == 0){
+            child.setVelocity(0, LD.Player.maxVel * mult);
+        }else{
+            child.setVelocity(vel.x * mult, vel.y * mult);
+        }
+        
+
+//voids.killAndHide(child)
     }
 
 	

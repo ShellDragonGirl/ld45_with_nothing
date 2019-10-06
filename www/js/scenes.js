@@ -137,15 +137,15 @@ LD.Scenes.WinLose = new Phaser.Class({
 
         var specificMessage = this.inText;
         // var specificMessage = "you lost bruh";
-		var loseText = this.add.text(LD.Globals.horizontalOffset, 80, 
-	    	LD.Messages.loseTextMsg + "\n" + specificMessage, 
+		var winloseText = this.add.text(LD.Globals.horizontalOffset, 80, 
+	    	LD.Messages.winloseTextMsg + "\n" + specificMessage, 
 	    	{ align: 'center', 
 	    		font: '48px Anton', 
 	    		fill: '#fff', 
 	    		wordWrap: {width: LD.Globals.gameWidth - (LD.Globals.horizontalOffset*2)} 
 	    	});
-        loseText.setStroke('#000', 5);	    
-        loseText.setX( (LD.Globals.gameWidth - loseText.width)/2 ); 
+        winloseText.setStroke('#000', 5);	    
+        winloseText.setX( (LD.Globals.gameWidth - winloseText.width)/2 ); 
 
         var restartText = this.add.text(60, LD.Globals.vertOneThird*2.5, 
             LD.Messages.restartTextMsg, 
@@ -211,6 +211,8 @@ LD.Scenes.Play = new Phaser.Class({
         this.load.spritesheet('nothing', 'img/sprites/nothing.png', { frameWidth: 48, frameHeight: 48 });
         this.load.spritesheet('baddie', 'img/sprites/baddies.png', { frameWidth: 48, frameHeight: 48 });
 
+        this.load.spritesheet('void', 'img/sprites/void.png', { frameWidth: 16, frameHeight: 16 });
+
         
 
     },
@@ -230,6 +232,7 @@ LD.Scenes.Play = new Phaser.Class({
         var map = LD.Maps.create(this);
         var player = LD.Player.createPlayer();
         var monsters = LD.Monsters.createMonsters();
+        var voids = LD.Player.voids;
 
         // this.physics.world.setBounds(0, 0, 720, 720, true, true, true, true);
         this.physics.world.setBounds(0, 0, 
@@ -279,6 +282,7 @@ LD.Scenes.Play = new Phaser.Class({
             var y = LD.Globals.randomNumber(10,LD.Maps.map.heightInPixels-10);
             child.setPosition(x,y);
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            child.setName("star");
 
         });
 
@@ -297,6 +301,14 @@ LD.Scenes.Play = new Phaser.Class({
                                     +LD.Messages.woodTextSuffix,  
                                     { fontFamily: 'Anton', fontSize: '48px', fill: '#fff' });
         LD.Messages.woodText.setStroke('#000', 5); 
+
+        LD.Messages.nothingText = this.add.text(16, 64, 
+                                    LD.Messages.nothingTextPrefix
+                                    + "0"
+                                    +LD.Messages.nothingTextSuffix,  
+                                    { fontFamily: 'Anton', fontSize: '48px', fill: '#fff' });
+        LD.Messages.nothingText.setStroke('#000', 5); 
+
         // NT.Messages.woodText.setX( (NT.Globals.gameWidth - NT.Messages.introText.width)/2 ); 
 
         var layer1 = LD.Maps.layer1;
@@ -312,6 +324,9 @@ LD.Scenes.Play = new Phaser.Class({
 
         this.physics.add.collider(player, monsters, this.hitMonsters, null, this);
         this.physics.add.collider(LD.Player.sword, monsters, this.hitSword, null, this);
+        
+        this.physics.add.overlap(voids, monsters, this.hitVoid, null, this);
+        this.physics.add.overlap(voids, stars, this.hitVoid, null, this);
 
 
         
@@ -353,10 +368,12 @@ LD.Scenes.Play = new Phaser.Class({
                                     + LD.Player.score
                                     +LD.Messages.woodTextSuffix);
 
+        
+
 
         if(LD.Player.score >= 9){
             // Phaser.Scene.call(this, 'lose');
-            thisGame.scene.start('winlose', { id: 2, text:  "you got all wood heh"  });
+            thisGame.scene.start('winlose', { id: 2, text:  "you got all nothing heh"  });
         }
 
 
@@ -417,6 +434,26 @@ LD.Scenes.Play = new Phaser.Class({
         LD.Monsters.monsters.health -= LD.Player.attackDamage;
 
         // thisGame.scene.start('lose', { id: 2, text:  "you lost lol"  });
+    },
+
+    hitVoid: function (voids, victim)
+    {
+        console.log(voids,victim);
+
+        if(voids.active && victim.active){
+            LD.Player.nothingTally +=1;
+
+            //kill victim
+            victim.setActive(false).setVisible(false);
+            victim.body.enable = false;
+
+            LD.Messages.nothingText.setText(LD.Messages.nothingTextPrefix
+                                        + LD.Player.nothingTally
+                                        +LD.Messages.nothingTextSuffix);
+        }
+        //nothing++
+        
+
     }
     
 

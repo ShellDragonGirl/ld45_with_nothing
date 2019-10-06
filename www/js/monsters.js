@@ -30,8 +30,10 @@ LD.Monsters = {
         LD.Monsters.monsters.setCollideWorldBounds(true);
         LD.Monsters.monsters.setBounce(true);
         LD.Monsters.monsters.health = 10;
+        LD.Monsters.monsters.setName("baddie");
 
-        
+        LD.Monsters.monsters.setSize(33,42).setOffset(8,4);
+
 
         LD.Monsters.buildAnims("baddie");
 
