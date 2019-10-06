@@ -94,154 +94,21 @@ LD.Scenes.Intro = new Phaser.Class({
 
 
 
-LD.Scenes.Win = new Phaser.Class({
+
+LD.Scenes.WinLose = new Phaser.Class({
 
     Extends: Phaser.Scene,
 
     initialize:
 
-    function Win ()
+    function WinLose ()
     {
-        Phaser.Scene.call(this, { key: 'win' });
+        Phaser.Scene.call(this, { key: 'winlose' });
     },
 
     init: function (data)
     {
         this.inText = data.text;
-    },
-
-    preload: function ()
-    {
-	    // this.load.image('teal_border', 'img/backgrounds_teal_border.png');
-	    this.load.image('black_center', 'img/background_win_lose.png');
-        this.load.spritesheet('booty_shorts', 'img/booty_shorts.png', { frameWidth: 200, frameHeight: 200 });
-        this.load.spritesheet('dancing_alien1', 'img/dancing_alien1.png', { frameWidth: 210, frameHeight: 630 });
-        this.load.spritesheet('hoops', 'img/hoops.png', { frameWidth: 100, frameHeight: 100 });
-        
-    },
-
-    create: function ()
-    {
-    	var black_center = this.add.sprite(0,0, 'black_center').setInteractive();
-	    black_center.setDisplayOrigin(0);
-
-        LD.Sounds.emptySound.play();
-
-
-        var booty_shortsAnimation = this.anims.create({
-            key: 'booty_shorts',
-            frames: this.anims.generateFrameNumbers('booty_shorts'),
-            frameRate: 16,
-            yoyo: true,
-            repeat: -1
-        });
-
-        var booty_shorts = this.add.sprite(LD.Globals.horzCenter,
-                                            LD.Globals.vertOneThird * 2.5, 
-                                            'booty_shorts');
-        booty_shorts.anims.play('booty_shorts');
-
-
-
-        var dancing_alien1Animation = this.anims.create({
-            key: 'dancing_alien1',
-            frames: this.anims.generateFrameNumbers('dancing_alien1'),
-            frameRate: 12,
-            yoyo: true,
-            repeat: -1
-        });
-
-        var dancing_alien1 = this.add.sprite(LD.Globals.vertOneThird*0.5,
-                                            LD.Globals.vertOneThird, 
-                                            'dancing_alien1');
-        dancing_alien1.anims.play('dancing_alien1');
-
-
-
-        var hoopsAnimation = this.anims.create({
-            key: 'hoops',
-            frames: this.anims.generateFrameNumbers('hoops'),
-            // frames: thisGame.anims.generateFrameNumbers('hoops',{
-            //             frames:[0-3,16-21,4-6,8-14,22,24,25-30,32-38]}),
-            frameRate: 12,
-            repeat: -1
-        });
-
-        var hoops = this.add.sprite(LD.Globals.horzCenter*1.5,
-                                            LD.Globals.vertOneThird*1.5, 
-                                            'hoops');
-        hoops.setScale(2);
-        hoops.anims.play('hoops');
-
-
-	    var winText = this.add.text(LD.Globals.horizontalOffset, 80, 
-	    	LD.Messages.winTextMsg + "\n" + this.inText, 
-	    	{ align: 'center', 
-	    		font: '48px Anton', 
-	    		fill: '#fff', 
-	    		wordWrap: {width: LD.Globals.gameWidth - (LD.Globals.horizontalOffset*2)} 
-	    	});
-        winText.setStroke('#000', 5);        
-        winText.setX( (LD.Globals.gameWidth - winText.width)/2 ); 
-
-
-	    var restartText = this.add.text(60, LD.Globals.vertOneThird*2.5, 
-            LD.Messages.restartTextMsg, 
-            { align: 'center', font: '48px Anton', fill: '#fff' });
-        restartText.setStroke('#000', 5);        
-        restartText.setX( (LD.Globals.gameWidth - restartText.width)/2 ); 
-
-
-        LD.Messages.timeText = this.add.text(40, LD.Globals.vertOneThird*2.8, 
-                                    LD.Messages.timeTextPrefix + LD.Messages.savedTimeFormatted() , 
-                                    { fontFamily: 'Anton', fontSize: '36px', fill: '#fff' });
-        LD.Messages.timeText.setStroke('#000', 5);        
-
-
-
-        var fullClick = false;
-
-        this.input.once('pointerup', function () {
-
-            fullClick = true;
-            // console.log("pointerup , click!");
-            var deadlockTimer = this.time.delayedCall(LD.Globals.deadlockTimeDelay, 
-                                                    function(){this.scene.start('select')}, 
-                                                    [], this); 
-
-        }, this);
-
-        this.input.once('pointerdown', function () {
-
-            // console.log("pointerdown , click!");
-            if(fullClick){
-                console.log("fullClick! , select");
-                this.scene.start('select');
-            }
-
-        }, this);
-
-    }
-
-});
-
-
-
-
-LD.Scenes.Lose = new Phaser.Class({
-
-    Extends: Phaser.Scene,
-
-    initialize:
-
-    function Lose ()
-    {
-        Phaser.Scene.call(this, { key: 'lose' });
-    },
-
-    init: function (data)
-    {
-        // this.inText = data.text;
     },
 
     preload: function ()
@@ -268,8 +135,8 @@ LD.Scenes.Lose = new Phaser.Class({
         LD.Messages.timeText.setStroke('#000', 5);        
 
 
-        // var specificMessage = this.inText;
-        var specificMessage = "you lost bruh";
+        var specificMessage = this.inText;
+        // var specificMessage = "you lost bruh";
 		var loseText = this.add.text(LD.Globals.horizontalOffset, 80, 
 	    	LD.Messages.loseTextMsg + "\n" + specificMessage, 
 	    	{ align: 'center', 
@@ -465,7 +332,7 @@ LD.Scenes.Play = new Phaser.Class({
         LD.Messages.healthBarCurrentRect.setSize(hpRatio,20);
 
         if(LD.Player.currentHP <= 0){
-            thisGame.scene.start('lose', { id: 2, text:  "you lost lol"  });
+            thisGame.scene.start('winlose', { id: 2, text:  "you kildzt lol"  });
         }
 
         if(LD.Monsters.monsters.health <= 0){
@@ -489,7 +356,7 @@ LD.Scenes.Play = new Phaser.Class({
 
         if(LD.Player.score >= 9){
             // Phaser.Scene.call(this, 'lose');
-            thisGame.scene.start('lose', { id: 2, text:  "you lost lol"  });
+            thisGame.scene.start('winlose', { id: 2, text:  "you got all wood heh"  });
         }
 
 
