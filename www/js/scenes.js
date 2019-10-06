@@ -390,7 +390,8 @@ LD.Scenes.Play = new Phaser.Class({
         var map = LD.Maps.create(this);
         var player = LD.Player.createPlayer();
 
-        this.physics.world.setBounds(0, 0, 300, 300, true, true, true, true);
+        // this.physics.world.setBounds(0, 0, 720, 720, true, true, true, true);
+        this.physics.world.setBounds(0, 0, 3000, 3000, true, true, true, true);
 // /
 
         // do once
