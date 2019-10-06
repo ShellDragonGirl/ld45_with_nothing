@@ -3,6 +3,10 @@ if(LD === undefined) {
 }
 
 LD.Messages = {
+    woodText:  "",
+    woodTextPrefix:   "Need Wood: ",
+    woodTextSuffix:   "/9",
+
     movesText:  "",
     movesTextPrefix:   "Moves: ",
 
@@ -19,7 +23,7 @@ LD.Messages = {
     timeTextPrefix :   "Time: ",
     savedTime: 0,
 
-    introTextMsg:   "Don't you think It's time to get started?   ...Isn't time you WAKE UP!",
+    introTextMsg:   "Don't you think It's time to get started?   \n\t...Isn't time you WAKE UP!",
     selectTextMsg:   "Select your Runner!",
     winTextMsg:   "You Won!",
     loseTextMsg:   "You Lost!",

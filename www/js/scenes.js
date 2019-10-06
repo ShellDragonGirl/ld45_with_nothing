@@ -241,13 +241,13 @@ LD.Scenes.Lose = new Phaser.Class({
 
     init: function (data)
     {
-        this.inText = data.text;
+        // this.inText = data.text;
     },
 
     preload: function ()
     {
 	    // this.load.image('teal_border', 'img/backgrounds_teal_border.png');
-	    this.load.image('black_center', 'img/background_win_lose.png');
+	    this.load.image('black_center', 'img/missing.png');
 
     },
 
@@ -268,7 +268,8 @@ LD.Scenes.Lose = new Phaser.Class({
         LD.Messages.timeText.setStroke('#000', 5);        
 
 
-        var specificMessage = this.inText;
+        // var specificMessage = this.inText;
+        var specificMessage = "you lost bruh";
 		var loseText = this.add.text(LD.Globals.horizontalOffset, 80, 
 	    	LD.Messages.loseTextMsg + "\n" + specificMessage, 
 	    	{ align: 'center', 
@@ -292,7 +293,7 @@ LD.Scenes.Lose = new Phaser.Class({
             fullClick = true;
             // console.log("pointerup , click!");
             var deadlockTimer = this.time.delayedCall(LD.Globals.deadlockTimeDelay, 
-                                                    function(){this.scene.start('select')}, 
+                                                    function(){this.scene.start('play')}, 
                                                     [], this); 
 
         }, this);
@@ -302,41 +303,10 @@ LD.Scenes.Lose = new Phaser.Class({
             // console.log("pointerdown , click!");
             if(fullClick){
                 console.log("fullClick! , select");
-                this.scene.start('select');
+                this.scene.start('play');
             }
 
         }, this);
-
-
-        
-        if (location.protocol == 'https:'){
-            FB.getLoginStatus(function(response) {
-              if (response.status === 'connected') {
-                // The user is logged in and has authenticated your
-                // app, and response.authResponse supplies
-                // the user's ID, a valid access token, a signed
-                // request, and the time the access token 
-                // and signed request each expire.
-                // var uid = response.authResponse.userID;
-                // var accessToken = response.authResponse.accessToken;
-                FB.ui({
-                  method: 'share',
-                  href: 'https://storm51game.com/',
-                  hashtag: '#storm51game',
-                  quote: LD.Messages.loseTextMsg + "\n" + specificMessage,
-                }, function(response){});
-              } else if (response.status === 'not_authorized') {
-                // The user hasn't authorized your application.  They
-                // must click the Login button, or you must call FB.login
-                // in response to a user gesture, to launch a login dialog.
-              } else {
-                // The user isn't logged in to Facebook. You can launch a
-                // login dialog with a user gesture, but the user may have
-                // to log in to Facebook before authorizing your application.
-              }
-             });
-        }
-
 
     }
 
@@ -370,6 +340,8 @@ LD.Scenes.Play = new Phaser.Class({
         this.load.image('star', 'img/sprites/wood.png');
         this.load.image('bomb', 'img/sprites/baddies.png');
         this.load.spritesheet('boy', 'img/sprites/boy.png', { frameWidth: 48, frameHeight: 64 });
+        this.load.spritesheet('nothing', 'img/sprites/nothing.png', { frameWidth: 48, frameHeight: 48 });
+        this.load.spritesheet('baddie', 'img/sprites/baddies.png', { frameWidth: 48, frameHeight: 48 });
 
         
 
@@ -389,28 +361,52 @@ LD.Scenes.Play = new Phaser.Class({
       
         var map = LD.Maps.create(this);
         var player = LD.Player.createPlayer();
+        LD.Monsters.createMonsters();
 
         // this.physics.world.setBounds(0, 0, 720, 720, true, true, true, true);
-        this.physics.world.setBounds(0, 0, 3000, 3000, true, true, true, true);
+        this.physics.world.setBounds(0, 0, 
+                        LD.Maps.map.widthInPixels, 
+                        LD.Maps.map.heightInPixels, 
+                        true, true, true, true);
 // /
 
         // do once
+
+
+        // LD.Messages.healthBarFullRect = new Phaser.Geom.Rectangle(250, 200, 300, 40);
+        // LD.Messages.healthBarFullGraphics = this.add.graphics({ fillStyle: { color: 0x0000ff } });
+        // LD.Messages.healthBarFullGraphics.fillRectShape(LD.Messages.healthBarFullRect);
         
+        // LD.Messages.healthBarCurrentRect = new Phaser.Geom.Rectangle(250, 200, 280, 40);
+        // LD.Messages.healthBarCurrentGraphics = this.add.graphics({ fillStyle: { color: 0xFF0000 } });
+        // LD.Messages.healthBarCurrentGraphics.fillRectShape(LD.Messages.healthBarCurrentRect);
         
+        LD.Messages.healthBarFullRect = this.add.rectangle(200, 200, 148, 40, 0x0000ff);
+        LD.Messages.healthBarCurrentRect = this.add.rectangle(200, 200, 130, 40, 0xff0000);
+
         
         LD.Globals.cursors = this.input.keyboard.createCursorKeys();
         var cursors = LD.Globals.cursors;
 
+        LD.Globals.myKeys = this.input.keyboard.addKeys(
+            {W:Phaser.Input.Keyboard.KeyCodes.W,
+            S:Phaser.Input.Keyboard.KeyCodes.S,
+            A:Phaser.Input.Keyboard.KeyCodes.A,
+            D:Phaser.Input.Keyboard.KeyCodes.D}
+        );
+
         
         stars = this.physics.add.group({
             key: 'star',
-            repeat: 10,
-            setXY: { x: 10, y: 5, stepX: 70 }
+            repeat: 12
+            // setXY: { x: 10, y: 5, stepX: 70 }
         });
 
         stars.children.iterate(function (child) {
 
-           
+            var x = LD.Globals.randomNumber(10, LD.Maps.map.widthInPixels-10);
+            var y = LD.Globals.randomNumber(10,LD.Maps.map.heightInPixels-10);
+            child.setPosition(x,y);
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
 
         });
@@ -418,7 +414,19 @@ LD.Scenes.Play = new Phaser.Class({
         bombs = this.physics.add.group();
 
         
-        LD.Messages.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+        // LD.Messages.woodText = this.add.text(16, 16, 
+        //                             LD.Messages.woodTextPrefix
+        //                             + "0"
+        //                             +LD.Messages.woodTextSuffix, 
+        //                             { fontSize: '32px', fill: '#000' });
+
+        LD.Messages.woodText = this.add.text(16, 16, 
+                                    LD.Messages.woodTextPrefix
+                                    + "0"
+                                    +LD.Messages.woodTextSuffix,  
+                                    { fontFamily: 'Anton', fontSize: '48px', fill: '#fff' });
+        LD.Messages.woodText.setStroke('#000', 5); 
+        // NT.Messages.woodText.setX( (NT.Globals.gameWidth - NT.Messages.introText.width)/2 ); 
 
         var layer1 = LD.Maps.layer1;
 
@@ -444,9 +452,9 @@ LD.Scenes.Play = new Phaser.Class({
         
 
         var player = LD.Player.updatePlayer();
+        LD.Monsters.updateMonsters();
         
-
-       
+        // LD.Messages.healthBarCurrentRect.setSize(30,41);
     },
 
 
@@ -454,8 +462,22 @@ LD.Scenes.Play = new Phaser.Class({
         star.disableBody(true, true);
 
         
-        LD.Player.score += 10;
-        LD.Messages.scoreText.setText('Score: ' + LD.Player.score);
+        LD.Player.score += 1;
+        // LD.Messages.scoreText.setText('Score: ' + LD.Player.score);
+
+
+        LD.Messages.woodText.setText(LD.Messages.woodTextPrefix
+                                    + LD.Player.score
+                                    +LD.Messages.woodTextSuffix);
+
+
+        if(LD.Player.score >= 9){
+            // Phaser.Scene.call(this, 'lose');
+            thisGame.scene.start('lose', { id: 2, text:  "you lost lol"  });
+        }
+
+
+
 
         if (stars.countActive(true) === 0)
         {
