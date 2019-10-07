@@ -32,12 +32,12 @@ LD.Messages = {
     winloseTextMsg:   "",
     restartTextMsg:   "Click to restart!",
 
-    gotSwordText: "there's a note it reads: \n\t\t\they kid i left you  my old sword",
+    gotSwordText: "There's a note it reads: \n\t\t\tHey kid I left you my old sword",
 
     winloseTexts: {
-        zeroHP:"how am i going to get anything done if you're dead",
-        nothingMaxed: "thanks i'll take it from here",
-        levelOneCleared: "ah the fire is nice and let's take a nap"
+        zeroHP: "How am I going to get anything done \n\t if you're dead",
+        nothingMaxed: "Thanks I'll take it from here",
+        levelOneCleared: "Ah... The fire is nice \n\t and let's take a nap"
       },
 
     textDepth: 200,
