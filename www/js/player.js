@@ -72,9 +72,6 @@ LD.Player = {
                 child.setCollideWorldBounds(true);
                 child.body.onWorldBounds = true;
 
-                child.fakeaf = "derp";
-
-
                 child.body.world.on('worldbounds', function(body) {
                   // Check if the body's game object is the sprite you are listening for
                   if (body.gameObject === this) {
