@@ -221,6 +221,7 @@ LD.Player = {
 
         // nothing.setPosition(player.getBottomRight());
         // console.log(player.getBottomRight());
+        nothing.setTint(0x111111);
         nothing.setPosition(player.x + LD.Player.nothingOffset.x,
                             player.y + LD.Player.nothingOffset.y);
 
