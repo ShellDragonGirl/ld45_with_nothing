@@ -118,12 +118,7 @@ LD.Scenes.Intro2 = new Phaser.Class({
     },
 
     update: function () {
-<<<<<<< HEAD
         if(LD.Sounds.november.isPlaying){
-=======
-        // if(LD.Sounds.emptySound.isPlaying){
-        if(true){
->>>>>>> 02a7252faa8c22a595821aed785476fcf889d0b8
             console.log("intro2 audio loaded!");
             var deadlockTimer = this.time.delayedCall(LD.Globals.deadlockTimeDelay, 
                                                 function(){this.scene.start('play')}, 
