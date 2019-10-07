@@ -370,7 +370,7 @@ LD.Scenes.Play = new Phaser.Class({
         this.physics.add.collider(player, layer1);
         this.physics.add.collider(stars, layer1);
         this.physics.add.collider(bombs, layer1);
-        this.physics.add.collider(player, layer1);
+        this.physics.add.collider(monsters, layer1);
         
         this.physics.add.overlap(player, stars, this.collectStar, null, this);
 

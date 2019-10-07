@@ -211,6 +211,8 @@ LD.Monsters = {
 
         child.name = "baddie";
         child.health = LD.Monsters.totalHP;
+        child.setCollideWorldBounds(true);
+        child.setBounce(true);
         child.body.enable = true;
 
 

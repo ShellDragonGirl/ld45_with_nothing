@@ -6,7 +6,7 @@ LD.Player = {
 
 	// unchangle properties go here
 	totalHP: 10,
-    nothingOffset: {x:50,y:50},
+    nothingOffset: {x:40,y:40},
     swordOffset: {xL:-16,yL:0,xR:22,yR:0},
     hpBarOffset: {x:0,y:-40},
     
