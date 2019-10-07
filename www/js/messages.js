@@ -53,6 +53,8 @@ LD.Messages = {
 
     textDepth: 200,
 
+    hpBarSize: {width:100,height:20},
+
 
     savedTimeFormatted: function(){
         return LD.Messages.msToTime(LD.Messages.savedTime);

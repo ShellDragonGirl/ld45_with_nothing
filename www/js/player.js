@@ -8,6 +8,7 @@ LD.Player = {
 	totalHP: 10,
     nothingOffset: {x:50,y:50},
     swordOffset: {xL:-16,yL:0,xR:22,yR:0},
+    hpBarOffset: {x:0,y:-40},
     
     swipeDegrees: 150,
     swipeInc: 15,
@@ -29,6 +30,8 @@ LD.Player = {
         LD.Player.score = 0;
         LD.Player.swipeAngle = 0;
 		LD.Player.vel = {x:0,y:0};
+
+        LD.Player.hpBarOffset.x = -LD.Messages.hpBarSize.width/2 +48;
 	},
 
 	createPlayer: function(){
@@ -221,6 +224,10 @@ LD.Player = {
 
         // nothing.setPosition(player.getBottomRight());
         // console.log(player.getBottomRight());
+        var hpBar = LD.Player.hpBarOffset;
+        LD.Messages.healthBarFullRect.setPosition(player.x + hpBar.x, player.y + hpBar.y);
+        LD.Messages.healthBarCurrentRect.setPosition(player.x + hpBar.x, player.y + hpBar.y);
+
         nothing.setTint(0x111111);
         nothing.setPosition(player.x + LD.Player.nothingOffset.x,
                             player.y + LD.Player.nothingOffset.y);

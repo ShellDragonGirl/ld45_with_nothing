@@ -118,7 +118,12 @@ LD.Scenes.Intro2 = new Phaser.Class({
     },
 
     update: function () {
+<<<<<<< HEAD
         if(LD.Sounds.november.isPlaying){
+=======
+        // if(LD.Sounds.emptySound.isPlaying){
+        if(true){
+>>>>>>> 02a7252faa8c22a595821aed785476fcf889d0b8
             console.log("intro2 audio loaded!");
             var deadlockTimer = this.time.delayedCall(LD.Globals.deadlockTimeDelay, 
                                                 function(){this.scene.start('play')}, 
@@ -298,10 +303,18 @@ LD.Scenes.Play = new Phaser.Class({
         // LD.Messages.healthBarCurrentGraphics = this.add.graphics({ fillStyle: { color: 0xFF0000 } });
         // LD.Messages.healthBarCurrentGraphics.fillRectShape(LD.Messages.healthBarCurrentRect);
         
-        LD.Messages.healthBarFullRect = this.add.rectangle(200, 200, 148, 20, 0x0000ff);
-        LD.Messages.healthBarCurrentRect = this.add.rectangle(200, 200, 130, 20, 0xff0000);
+        LD.Messages.healthBarFullRect = this.add.rectangle(200, 200, 
+                                                        LD.Messages.hpBarSize.width, 
+                                                        LD.Messages.hpBarSize.height, 
+                                                        0xff0000);
+        LD.Messages.healthBarCurrentRect = this.add.rectangle(200, 200, 
+                                                        LD.Messages.hpBarSize.width, 
+                                                        LD.Messages.hpBarSize.height, 
+                                                        0x0000ff);
 
-        
+        LD.Messages.healthBarFullRect.setZ(2);
+        LD.Messages.healthBarCurrentRect.setZ(3);
+
         LD.Globals.cursors = this.input.keyboard.createCursorKeys();
         var cursors = LD.Globals.cursors;
 
@@ -389,7 +402,7 @@ LD.Scenes.Play = new Phaser.Class({
         var player = LD.Player.updatePlayer();
         LD.Monsters.updateMonsters();
         
-        var hpRatio =  148 * (LD.Player.currentHP / LD.Player.totalHP);
+        var hpRatio =  LD.Messages.hpBarSize.width * (LD.Player.currentHP / LD.Player.totalHP);
         LD.Messages.healthBarCurrentRect.setSize(hpRatio,20);
 
         if(LD.Player.currentHP <= 0){
