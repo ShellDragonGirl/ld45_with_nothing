@@ -9,6 +9,29 @@ LD.Sounds = {
 			name: 'emptySound',
 			volume: 0.01,
 			loop: false
+			
+		},
+		{
+			
+			name: 'relaxing',
+			volume: 1,
+			loop: true
+			
+		},
+		{
+			
+			name: 'Arabela',
+			volume: 1,
+			loop: true
+			
+
+		},
+		{
+			
+			name: 'november',
+			volume: 1,
+			loop: true
+
 		}
 	],
 

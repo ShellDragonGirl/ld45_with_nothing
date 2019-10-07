@@ -53,12 +53,12 @@ LD.Scenes.Intro = new Phaser.Class({
         LD.Messages.introText.setX( (LD.Globals.gameWidth - LD.Messages.introText.width)/2 ); 
 
         this.input.once('pointerdown', function () {
-            LD.Sounds.myPlay('emptySound');
+            LD.Sounds.myPlay('Arabela');
         }, this);
     },
 
     update: function () {
-        if(LD.Sounds.emptySound.isPlaying){
+        if(LD.Sounds.Arabela.isPlaying){
             console.log("intro audio loaded!");
             var deadlockTimer = this.time.delayedCall(LD.Globals.deadlockTimeDelay, 
                                                 function(){this.scene.start('intro2')}, 
@@ -112,13 +112,13 @@ LD.Scenes.Intro2 = new Phaser.Class({
         LD.Messages.introText2.setX( (LD.Globals.gameWidth - LD.Messages.introText2.width)/2 ); 
 
         this.input.once('pointerdown', function () {
-            LD.Sounds.myPlay('emptySound');
+            LD.Sounds.myPlay('november');
         }, this);
 
     },
 
     update: function () {
-        if(LD.Sounds.emptySound.isPlaying){
+        if(LD.Sounds.november.isPlaying){
             console.log("intro2 audio loaded!");
             var deadlockTimer = this.time.delayedCall(LD.Globals.deadlockTimeDelay, 
                                                 function(){this.scene.start('play')}, 
