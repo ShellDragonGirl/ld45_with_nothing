@@ -41,6 +41,12 @@ LD.Sounds = {
 		LD.Sounds[tune.name].play({volume: tune.volume * vol, loop: tune.loop});
 	},
 
+	myStop: function (name, vol=1){
+		console.log("sounds", name, LD.Sounds);
+		var tune = LD.Sounds.findTuneByName(name);
+		LD.Sounds[tune.name].stop();
+	},
+
 	findTuneByName: function (name){
 		var i;
 		for(i=0;i<LD.Sounds.allSounds.length;++i){
