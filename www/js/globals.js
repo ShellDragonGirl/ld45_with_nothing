@@ -8,7 +8,7 @@ LD.Globals = {
 	gameWidth: 600,
 	gameHeight: 840,
 
-
+	deadlockTimeDelay: 1,
 
 	randomNumber: function (min, max) {  
 	    var min = Math.ceil(min); 

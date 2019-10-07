@@ -25,6 +25,7 @@ function main(){
 	        noAudio: false
 	    },
 	    scene: [LD.Scenes.Intro, 
+	    	LD.Scenes.Intro2, 
 	    	LD.Scenes.Play, 
 	    	LD.Scenes.WinLose]
 	};

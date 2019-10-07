@@ -30,8 +30,7 @@ LD.Scenes.Intro = new Phaser.Class({
 
     preload: function ()
     {
-        this.load.image('black_center', 'img/background_win_lose.png');
-	    this.load.image('tinySquare', 'img/tinySquare.png');
+        this.load.image('black_center', 'img/assets/bg.png');
 
         
         LD.Sounds.preload(this);
@@ -44,11 +43,6 @@ LD.Scenes.Intro = new Phaser.Class({
 
         LD.Sounds.create(this);
 
-        
-        
-        // LD.Sounds.musicAudio.play();
-
-
     	var black_center = this.add.sprite(0,0, 'black_center');
 	    black_center.setDisplayOrigin(0);
 
@@ -58,24 +52,82 @@ LD.Scenes.Intro = new Phaser.Class({
         LD.Messages.introText.setStroke('#000', 5); 
         LD.Messages.introText.setX( (LD.Globals.gameWidth - LD.Messages.introText.width)/2 ); 
 
+        this.input.once('pointerdown', function () {
+            LD.Sounds.myPlay('emptySound');
+        }, this);
+    },
 
+    update: function () {
+        if(LD.Sounds.emptySound.isPlaying){
+            console.log("intro audio loaded!");
+            var deadlockTimer = this.time.delayedCall(LD.Globals.deadlockTimeDelay, 
+                                                function(){this.scene.start('intro2')}, 
+                                                [], this); 
+        }
+    }
+
+});
+
+
+
+LD.Scenes.Intro2 = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Intro2 ()
+    {
+        Phaser.Scene.call(this, { key: 'intro2' });
+    },
+
+    init: function (data)
+    {
+        // console.log('init', data);
+
+        this.imageID = data.id;
+        this.imageFile = data.image;
+
+        thisGame = this;
+        LD.Globals.game = this;
+        // LD.Globals.initKeys(this);
+    },
+
+    preload: function ()
+    {
+        this.load.image('fireplace', 'img/assets/fireplace.png');
+    },
+
+    create: function ()
+    {
+
+
+        var fireplace = this.add.sprite(0,0, 'fireplace');
+        fireplace.setDisplayOrigin(0);
+
+        LD.Messages.introText2 = this.add.text(160, 80, 
+                                    LD.Messages.introTextMsg2 , 
+                                    { fontFamily: 'Anton', fontSize: '48px', fill: '#fff' });
+        LD.Messages.introText2.setStroke('#000', 5); 
+        LD.Messages.introText2.setX( (LD.Globals.gameWidth - LD.Messages.introText2.width)/2 ); 
 
         this.input.once('pointerdown', function () {
             LD.Sounds.myPlay('emptySound');
         }, this);
 
-
     },
 
-    update: function (){
-        console.log("in update");
+    update: function () {
         if(LD.Sounds.emptySound.isPlaying){
-            console.log("audio loaded!");
-            this.scene.start('play');
+            console.log("intro2 audio loaded!");
+            var deadlockTimer = this.time.delayedCall(LD.Globals.deadlockTimeDelay, 
+                                                function(){this.scene.start('play')}, 
+                                                [], this); 
         }
     }
 
 });
+
 
 
 
@@ -205,7 +257,7 @@ LD.Scenes.Play = new Phaser.Class({
         this.load.spritesheet('nothing', 'img/sprites/nothing.png', { frameWidth: 48, frameHeight: 48 });
         this.load.spritesheet('baddie', 'img/sprites/baddies.png', { frameWidth: 48, frameHeight: 48 });
 
-        this.load.spritesheet('void', 'img/sprites/void.png', { frameWidth: 16, frameHeight: 16 });
+        this.load.spritesheet('void', 'img/sprites/void.png', { frameWidth: 9, frameHeight: 9 });
 
         
 
