@@ -59,14 +59,6 @@ LD.Scenes.Intro = new Phaser.Class({
         LD.Messages.introText.setX( (LD.Globals.gameWidth - LD.Messages.introText.width)/2 ); 
 
 
-        this.pointerUp = false;
-        this.input.once('pointerup', function () {
-
-            // this.scene.start('play');
-            this.pointerUp = true;
-
-
-        }, this);
 
         this.input.once('pointerdown', function () {
             LD.Sounds.myPlay('emptySound');
@@ -76,7 +68,8 @@ LD.Scenes.Intro = new Phaser.Class({
     },
 
     update: function (){
-        if(this.pointerUp && LD.Sounds.emptySound.isPlaying){
+        console.log("in update");
+        if(LD.Sounds.emptySound.isPlaying){
             console.log("audio loaded!");
             this.scene.start('play');
         }
@@ -373,7 +366,7 @@ LD.Scenes.Play = new Phaser.Class({
 
         if(LD.Player.score >= 9){
             // Phaser.Scene.call(this, 'lose');
-            thisGame.scene.start('winlose', { id: 2, text:  "you got all nothing heh"  });
+            thisGame.scene.start('winlose', { id: 2, text:  "you got all wood heh"  });
         }
 
 
@@ -442,6 +435,14 @@ LD.Scenes.Play = new Phaser.Class({
 
         if(voids.active && victim.active){
             LD.Player.nothingTally +=1;
+
+            if(LD.Player.nothingTally >= LD.Player.nothingTallyMax){
+                thisGame.scene.start('winlose', { id: 2, text:  "ill take it from here..."  });
+
+            }
+
+            var nothingScale = LD.Player.nothingScaleMax * (LD.Player.nothingTally / LD.Player.nothingTallyMax)
+            LD.Player.nothing.setScale(nothingScale);
 
             //kill victim
             victim.setActive(false).setVisible(false);

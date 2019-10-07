@@ -18,6 +18,7 @@ LD.Player = {
     voidMultFactor: 2,
 
     nothingTallyMax: 10,
+    nothingScaleMax: 4,
 
 	refresh: function (){
 		// refresh every game propeties goes here
