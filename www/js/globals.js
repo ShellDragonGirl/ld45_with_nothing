@@ -18,7 +18,14 @@ LD.Globals = {
 
 	randomFloat: function (min, max) {
         return Math.random() * (max - min) + min;
-	}
+	},
+
+    randomSpawn: function(x, y){
+        var spawn = {x:0,y:0};
+        spawn.x = LD.Globals.randomNumber(x,LD.Globals.gameWidth*0.95);
+        spawn.y = LD.Globals.randomNumber(y,LD.Globals.gameHeight*0.95);
+        return spawn;
+    }
 
 
 };

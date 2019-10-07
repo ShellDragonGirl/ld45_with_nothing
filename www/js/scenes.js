@@ -346,9 +346,18 @@ LD.Scenes.Play = new Phaser.Class({
                                             img: "bg"   });
         }
 
-        if(LD.Monsters.monsters.health <= 0){
-            LD.Monsters.monsters.destroy();
-        }
+        
+
+        LD.Monsters.monsters.children.iterate(function (child) {
+            if(child.active){
+                if(child.health <= 0){
+                    // LD.Monsters.activateChild();
+                    // LD.Monsters.activateChild();
+                    // child.destroy();
+                    LD.Monsters.killBaddie(child);
+                }
+            }
+        });
     },
 
 
@@ -433,7 +442,7 @@ LD.Scenes.Play = new Phaser.Class({
 
         // player.anims.play('boydown');
 
-        LD.Monsters.monsters.health -= LD.Player.attackDamage;
+        monster.health -= LD.Player.attackDamage;
 
         // thisGame.scene.start('lose', { id: 2, text:  "you lost lol"  });
     },
@@ -461,8 +470,15 @@ LD.Scenes.Play = new Phaser.Class({
             }else{
                 var victim = b1;
             }
-            victim.setActive(false).setVisible(false);
-            victim.body.enable = false;
+            if(b1.name == "baddie"){
+                LD.Monsters.killBaddie(b1);
+            }else if(b2.name == "baddie"){
+                LD.Monsters.killBaddie(b2);
+            }else{
+                victim.setActive(false).setVisible(false);
+                victim.body.enable = false;
+            }
+            
 
             LD.Messages.nothingText.setText(LD.Messages.nothingTextPrefix
                                         + LD.Player.nothingTally
