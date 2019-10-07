@@ -112,6 +112,7 @@ LD.Scenes.Intro2 = new Phaser.Class({
         LD.Messages.introText2.setX( (LD.Globals.gameWidth - LD.Messages.introText2.width)/2 ); 
 
         this.input.once('pointerdown', function () {
+            LD.Sounds.myStop('Arabela');
             LD.Sounds.myPlay('november');
         }, this);
 
