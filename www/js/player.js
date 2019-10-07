@@ -69,7 +69,6 @@ LD.Player = {
             createCallback: function (child) {
                 // child.setName('void');
                 // child.sprite = thisGame.physics.add.sprite(0, 0, 'void');
-                
                 child.setCollideWorldBounds(true);
                 child.body.onWorldBounds = true;
 
@@ -290,6 +289,9 @@ LD.Player = {
         .clearTint()
         .setScale(5)
         .play('void_shoot');
+
+        child.name = "void";
+
 
         var player = LD.Player.player;
         var vel =  LD.Player.vel; 

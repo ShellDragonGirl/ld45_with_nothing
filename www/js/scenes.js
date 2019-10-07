@@ -122,10 +122,10 @@ LD.Scenes.WinLose = new Phaser.Class({
 	    black_center.setDisplayOrigin(0);
 
         // console.log("seconds ",LD.Messages.savedTimeFormatted());
-        LD.Messages.timeText = this.add.text(40, LD.Globals.vertOneThird*2.8, 
-                                    LD.Messages.timeTextPrefix + LD.Messages.savedTimeFormatted() , 
-                                    { fontFamily: 'Anton', fontSize: '36px', fill: '#fff' });
-        LD.Messages.timeText.setStroke('#000', 5);        
+        // LD.Messages.timeText = this.add.text(40, LD.Globals.vertOneThird*2.8, 
+        //                             LD.Messages.timeTextPrefix + LD.Messages.savedTimeFormatted() , 
+        //                             { fontFamily: 'Anton', fontSize: '36px', fill: '#fff' });
+        // LD.Messages.timeText.setStroke('#000', 5);        
 
 
         var specificMessage = this.inText;
@@ -429,11 +429,11 @@ LD.Scenes.Play = new Phaser.Class({
         // thisGame.scene.start('lose', { id: 2, text:  "you lost lol"  });
     },
 
-    hitVoid: function (voids, victim)
+    hitVoid: function (b1, b2)
     {
-        console.log(voids,victim);
+        console.log(b1,b2);
 
-        if(voids.active && victim.active){
+        if(b1.active && b2.active){
             LD.Player.nothingTally +=1;
 
             if(LD.Player.nothingTally >= LD.Player.nothingTallyMax){
@@ -445,6 +445,11 @@ LD.Scenes.Play = new Phaser.Class({
             LD.Player.nothing.setScale(nothingScale);
 
             //kill victim
+            if(b1.name == "void"){
+                var victim = b2;
+            }else{
+                var victim = b1;
+            }
             victim.setActive(false).setVisible(false);
             victim.body.enable = false;
 
