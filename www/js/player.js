@@ -20,6 +20,8 @@ LD.Player = {
     nothingTallyMax: 10,
     nothingScaleMax: 4,
 
+    hasSword: false,
+
 	refresh: function (){
 		// refresh every game propeties goes here
         LD.Player.currentHP = 10;
@@ -186,7 +188,7 @@ LD.Player = {
             LD.Player.setAnimOfBoth('down');
         } 
 
-        if( myKeys.SPACE.isDown ){
+        if( LD.Player.hasSword && myKeys.SPACE.isDown ){
             console.log("swipeAngle",LD.Player.swipeAngle);
             if(swordLR == LD.Player.swordOffset.xR){
                 LD.Player.swipeAngle += LD.Player.swipeInc;

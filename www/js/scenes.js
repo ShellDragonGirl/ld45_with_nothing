@@ -102,12 +102,13 @@ LD.Scenes.WinLose = new Phaser.Class({
     init: function (data)
     {
         this.inText = data.text;
+        this.inImg = data.img;
     },
 
     preload: function ()
     {
 	    // this.load.image('teal_border', 'img/backgrounds_teal_border.png');
-	    this.load.image('black_center', 'img/missing.png');
+	    this.load.image('show_image', 'img/assets/'+this.inImg+'.png');
 
     },
 
@@ -118,7 +119,7 @@ LD.Scenes.WinLose = new Phaser.Class({
         LD.Sounds.emptySound.play();
 
 
-    	var black_center = this.add.sprite(0,0, 'black_center').setInteractive();
+    	var black_center = this.add.sprite(0,0, 'show_image').setInteractive();
 	    black_center.setDisplayOrigin(0);
 
         // console.log("seconds ",LD.Messages.savedTimeFormatted());
@@ -340,7 +341,9 @@ LD.Scenes.Play = new Phaser.Class({
         LD.Messages.healthBarCurrentRect.setSize(hpRatio,20);
 
         if(LD.Player.currentHP <= 0){
-            thisGame.scene.start('winlose', { id: 2, text:  "you kildzt lol"  });
+            thisGame.scene.start('winlose', { id: 2, 
+                                            text:  LD.Messages.winloseTexts.zeroHP ,
+                                            img: "bg"   });
         }
 
         if(LD.Monsters.monsters.health <= 0){
@@ -366,7 +369,13 @@ LD.Scenes.Play = new Phaser.Class({
 
         if(LD.Player.score >= 9){
             // Phaser.Scene.call(this, 'lose');
-            thisGame.scene.start('winlose', { id: 2, text:  "you got all wood heh"  });
+            // thisGame.scene.start('winlose', { id: 2, 
+            //                                 text:  "you got all wood heh",
+            //                                 img: "bg"  });
+            LD.Player.hasSword = true;
+
+            LD.Messages.woodText.setText(LD.Messages.gotSwordText);
+
         }
 
 
@@ -437,7 +446,9 @@ LD.Scenes.Play = new Phaser.Class({
             LD.Player.nothingTally +=1;
 
             if(LD.Player.nothingTally >= LD.Player.nothingTallyMax){
-                thisGame.scene.start('winlose', { id: 2, text:  "ill take it from here..."  });
+                thisGame.scene.start('winlose', { id: 2, 
+                                            text:  LD.Messages.winloseTexts.nothingMaxed ,
+                                            img: "bg"   });
 
             }
 
