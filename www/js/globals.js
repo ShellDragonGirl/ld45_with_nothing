@@ -5,8 +5,8 @@ if(LD === undefined) {
 LD.Globals = {
 	game: 0,
 
-	gameWidth: 600,
-	gameHeight: 840,
+	gameWidth: 800,
+	gameHeight: 600,
 
 	deadlockTimeDelay: 1,
 

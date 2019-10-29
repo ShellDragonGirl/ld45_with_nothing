@@ -6,7 +6,8 @@ LD.Player = {
 
 	// unchangle properties go here
 	totalHP: 10,
-    nothingOffset: {x:40,y:40},
+    nothingOffset: {x:25,y:5},
+    shadowoffset: {x:0,y:-10},
     swordOffset: {xL:-16,yL:0,xR:22,yR:0},
     hpBarOffset: {x:0,y:-40},
     
@@ -39,6 +40,7 @@ LD.Player = {
 		LD.Player.refresh();
 
         LD.Player.player = thisGame.physics.add.sprite(200, 200, 'boy');
+        LD.Player.shadow = thisGame.physics.add.sprite(200, 200, 'shadow');
         LD.Player.nothing = thisGame.physics.add.sprite(330, 330, 'nothing');
         LD.Player.sword = thisGame.physics.add.sprite(330, 330, 'sword2');
         LD.Player.sword.setScale(1,2.5);
@@ -48,7 +50,7 @@ LD.Player = {
 
       
         LD.Player.player.setCollideWorldBounds(true);
-        LD.Player.player.setSize(31,54).setOffset(9,7);
+        LD.Player.player.setSize(30,52).setOffset(9,7);
 
         
 

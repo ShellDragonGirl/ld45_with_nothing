@@ -254,10 +254,10 @@ LD.Scenes.Play = new Phaser.Class({
         this.load.image('star', 'img/sprites/wood.png');
         this.load.image('bomb', 'img/sprites/baddies.png');
         this.load.image('sword2', 'img/sprites/sword2.png');
-        this.load.spritesheet('boy', 'img/sprites/boy.png', { frameWidth: 48, frameHeight: 64 });
-        this.load.spritesheet('nothing', 'img/sprites/nothing.png', { frameWidth: 48, frameHeight: 48 });
+        this.load.spritesheet('boy', 'img/sprites/boy.png', { frameWidth: 30, frameHeight: 52 });
+        this.load.spritesheet('nothing', 'img/sprites/nothing.png', { frameWidth: 38, frameHeight: 44 });
         this.load.spritesheet('baddie', 'img/sprites/baddies.png', { frameWidth: 48, frameHeight: 48 });
-
+        this.load.spritesheet('shadow', 'img/sprites/shadow.png', { frameWidth: 16, frameHeight: 6 });  
         this.load.spritesheet('void', 'img/sprites/void.png', { frameWidth: 9, frameHeight: 9 });
 
         
