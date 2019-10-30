@@ -194,7 +194,7 @@ LD.Monsters = {
         child.anims.play('baddie'+anim, true);
     },
 
-    activateChild: function () {
+    activateChild: function (x=0,y=0, name="baddie", hp=0) {
 
         var child = LD.Monsters.monsters.get(LD.Globals.horzCenter, LD.Globals.vertOneThird);
 
@@ -209,8 +209,13 @@ LD.Monsters = {
         // .setTint(Phaser.Display.Color.RandomRGB().color)
         .clearTint();
 
-        child.name = "baddie";
-        child.health = LD.Monsters.totalHP;
+        child.name = name;
+        if(hp == 0){
+            child.health = LD.Monsters.totalHP;
+        }else{
+            child.health = hp;
+        }
+        
         child.setCollideWorldBounds(true);
         child.setBounce(true);
         child.body.enable = true;
@@ -220,8 +225,13 @@ LD.Monsters = {
         var vel =  LD.Player.vel; 
         var mult =  LD.Player.voidMultFactor; 
 
-        var spawn = LD.Globals.randomSpawn(200,250);
-        child.setPosition(spawn.x, spawn.y);
+        if(x==0 && y == 0){
+            var spawn = LD.Globals.randomSpawn(200,250);
+            child.setPosition(spawn.x, spawn.y);
+        }else{
+            child.setPosition(x,y);
+        }
+        
 
 
         
